@@ -1,13 +1,11 @@
 const express = require('express')
+const { json } = require('express/lib/response')
 const app = express()
 const morgan = require('morgan')
 app.use(express.json())
 
-morgan.token('bod', function getId (req) {
-    return req.bod
-  })
+morgan.token('bod', (req) => JSON.stringify(req.body))
 
-app.use(assignBod)
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :bod'))
 
 let persons = 
@@ -94,10 +92,6 @@ app.get('/info', (request, response) => {
                     <p> ${date} </p>`)
 })
 
-function assignBod (req, res, next) {
-    req.bod = JSON.stringify(req.body)
-    next()
-  }
 
 const PORT = 3001
 app.listen(PORT, () => {
