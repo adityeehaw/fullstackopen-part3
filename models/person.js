@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+const uniqueValidator = require('mongoose-unique-validator')
+
 const url = process.env.MONGODB_URI
 
 console.log('connecting to', url)
@@ -12,10 +14,28 @@ mongoose.connect(url)
         console.log('error connecting to MongoDB:', error.message)
     })
 
+const numbervalidator = (number) => {
+    let a = /^[0-9]{3}[-]\d*$|^[0-9]{2}[-]\d*$/.test(number)
+    return a
+}
+
+
 const personSchema = new mongoose.Schema({
-    name: String,
-    number: String
+    name: {
+    type: String,
+    minlength: 3,
+    required: true,
+    unique: true
+    },
+    number: {
+    type:String,
+    minlength: 8,
+    required: true,
+    validate: [numbervalidator, 'Number format is incorrect']
+    }
 })
+
+personSchema.plugin(uniqueValidator)
 
 personSchema.set('toJSON', {
     transform: (document, returnedObject) => {

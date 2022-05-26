@@ -2,6 +2,6 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 {
-    "name": "2pack",
-    "number": "146"
+    "name": "yoif",
+    "number": "146-456789"
 }
